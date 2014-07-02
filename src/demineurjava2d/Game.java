@@ -188,17 +188,59 @@ public class Game extends JFrame{
         if (cases[x][y] == -1) {
             for (int x1=0; x1 < Game.nbCasesX; x1++) {
                 for (int y1=0; y1 < Game.nbCasesY; y1++) {
-                    casesHidden[x][y] = false;
+                    casesHidden[x1][y1] = false;
                 }
             }
-//            fini = true;
-//            gagne = false;
+            fini = true;
+            gagne = false;
         }
-//        else if (cases[x][x] > 0) {
-//            casesHidden[x][y] = false;
-//        }
-//        else if (cases[x][x] == 0) {
-//            casesHidden[x][y] = false;
-//        }
+        else if (cases[x][y] > 0) {
+            casesHidden[x][y] = false;
+        }
+        else if (cases[x][y] == 0) {
+//            int posCases[][] = new int [1000][2];
+//            int posCases2[][] = new int [1000][2];
+//            int size = 1;
+//            int size2 = 0;
+//            posCases[0][0] = x;
+//            posCases[0][1] = y;
+//            while (size > 0) {  
+//                for (int s = 0; s < size; s++) {
+//                    if (casesHidden[posCases[s][0]][posCases[s][1]]) {
+//                        casesHidden[posCases[s][0]][posCases[s][1]] = false;
+//                        if (cases[posCases[s][0]][posCases[s][1]] == 0) {
+//                            
+//                            if (posCases[s][0] > 0) {
+//                                posCases2[size2][0] = posCases[s][0]-1;
+//                                posCases2[size2][1] = posCases[s][1];
+//                                size2++;
+//                            }
+//                            if (posCases[s][0] < x) {
+//                                posCases2[size2][0] = posCases[s][0]+1;
+//                                posCases2[size2][1] = posCases[s][1];
+//                                size2++;
+//                            }
+//                            if (posCases[s][1] > 0) {
+//                                posCases2[size2][0] = posCases[s][0];
+//                                posCases2[size2][1] = posCases[s][1]-1;
+//                                size2++;
+//                            }
+//                            if (posCases[s][1] < y) {
+//                                posCases2[size2][0] = posCases[s][0];
+//                                posCases2[size2][1] = posCases[s][1]+1;
+//                                size2++;
+//                            }
+//                        }
+//                        size--;
+//                    }
+//                }
+//                
+//                size = size2;
+//                for (int s=0; s < size; s++) {
+//                    posCases[s][0] = posCases2[s][0];
+//                    posCases[s][1] = posCases2[s][1];
+//                }
+//            }
+        }
     }
 }

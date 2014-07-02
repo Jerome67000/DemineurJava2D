@@ -28,18 +28,15 @@ public class Panel extends JPanel {
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                           RenderingHints.VALUE_ANTIALIAS_ON);
-        
-//        g.setColor(Color.BLACK);
-//        g.fillRect(0, 0, getSize().width, getSize().height);
-        
+
         // Parcour la grille et génère l'image à afficher
         for (int x=0; x < Game.nbCasesX; x++) {
             for (int y=0; y < Game.nbCasesY; y++) {
                 // Génère image case cliqué
-                g.drawImage(new ImageIcon("/home/jerome/NetBeansProjects/DemineurJava2D/src/demineurjava2d/Images/case.png").getImage(), x*Game.unite, y*Game.unite, null);
+                g.drawImage(new ImageIcon("/home/jerome/NetBeansProjects/DemineurJava2D/src/demineurjava2d/images/case.png").getImage(), x*Game.unite, y*Game.unite, null);
                 
                 if (Game.cases[x][y] == -1)
-                    g.drawImage(new ImageIcon("/home/jerome/NetBeansProjects/DemineurJava2D/src/demineurjava2d/Images/bombe.png").getImage(), x*Game.unite, y*Game.unite, null);
+                    g.drawImage(new ImageIcon("/home/jerome/NetBeansProjects/DemineurJava2D/src/demineurjava2d/images/bombe.png").getImage(), x*Game.unite, y*Game.unite, null);
                 else if (Game.cases[x][y] > 0) {
                     if (Game.cases[x][y] == 1) g.setColor(Color.darkGray);
                     if (Game.cases[x][y] == 2) g.setColor(Color.blue);
@@ -56,9 +53,9 @@ public class Panel extends JPanel {
                 
                 // Génère image case non cliqué
                 if (Game.casesHidden[x][y] == true) {
-                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-                    g.drawImage(new ImageIcon("/home/jerome/NetBeansProjects/DemineurJava2D/src/demineurjava2d/Images/caseN.png").getImage(), x*Game.unite, y*Game.unite, null);
-                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+//                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+                    g.drawImage(new ImageIcon("/home/jerome/NetBeansProjects/DemineurJava2D/src/demineurjava2d/images/caseN.png").getImage(), x*Game.unite, y*Game.unite, null);
+//                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
                 }
                 else {
                     
