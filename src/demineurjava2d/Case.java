@@ -12,7 +12,7 @@ package demineurjava2d;
  */
 public class Case {
     
-    private boolean visible = true;
+    private boolean visible = false;
     private int val;
     private int x;
     private int y;
