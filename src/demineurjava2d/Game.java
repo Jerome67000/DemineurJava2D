@@ -1,5 +1,7 @@
 package demineurjava2d;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -11,19 +13,21 @@ import javax.swing.JFrame;
 public class Game extends JFrame{
     
     public static Panel     panel = new Panel();
-    public static int       cursor[] = new int[2];
-    public static boolean   cursorOnPanel = false;
     public static Case      cases[][] = new Case[1000][1000];
+    private static int      frameRate = 12;
     public static int       nbCasesX =15;
     public static int       nbCasesY = 15;
+    public static int       unite = 32;
     
+    private final int       difficulte = 10;
     public static boolean   fini = false;
     public static boolean   gagne = false;
-    private final int       difficulte = 10;
-    public static int       unite = 32;
-    private static int      frameRate = 12;
-    public static MouseListener ml = new MouseListener();
     
+    public static MouseListener ml = new MouseListener();
+    public static boolean   cursorOnPanel = false;
+    public static int       cursorX;
+    public static int       cursorY;
+   
     public Game (String title) {
         
         this.setTitle(title);
@@ -35,7 +39,7 @@ public class Game extends JFrame{
         this.addMouseListener(ml);
         
         generate(difficulte);
-//        gameTrame();
+        gameTrame();
         
         System.out.println("Fenêtre créée");
     }
@@ -51,10 +55,10 @@ public class Game extends JFrame{
                 panel.mouseY > 0 && panel.mouseY < nbCasesY*unite) {
                 
                 cursorOnPanel = true;
-                cursor[0] = panel.mouseX/unite;
-                cursor[1] = panel.mouseY/unite;
+                cursorX = panel.mouseX/unite;
+                cursorY = panel.mouseY/unite;
                 if (ml.clicGauche && !fini) {
-                    supprCase(cursor[0], cursor[1]);
+                    supprCase(cursorX, cursorY);
                 }
                 if (ml.clicDroit && !fini) {
                     
@@ -93,7 +97,7 @@ public class Game extends JFrame{
             }
         } 
       
-        // Place les indices du nombres de bombes voisines
+        // Calculs les indices du nombres de bombes adjacentes
         for (int x=0; x < Game.nbCasesX; x++) {
             for (int y=0; y < Game.nbCasesY; y++) {
                 int nbMines = 0;
@@ -170,24 +174,25 @@ public class Game extends JFrame{
             }
         }
         
-        // TODO: réparrer affichage console
+        // TODO : réparrer affichage console
         for (int y=0; y < Game.nbCasesY; y++) {
             for (int x=0; x < Game.nbCasesX; x++) {
-                
                 if (x == nbCasesX-1) 
                     System.out.println("");
                 else if (cases[x][y].getVal() == -1)
                     System.out.print("|"+cases[x][y].getVal());
                 else 
                     System.out.print("| "+cases[x][y].getVal());
-
             }
         }
+        System.out.println("génération terminé");
     }
     
     public static void supprCase(int x, int y) {
         
+        
         if (cases[x][y].getVal() == -1) {
+            cases[x][y].setVisible(true);
             for (int x1=0; x1 < Game.nbCasesX; x1++) {
                 for (int y1=0; y1 < Game.nbCasesY; y1++) {
                     cases[x1][y1].setVisible(true);
@@ -200,52 +205,40 @@ public class Game extends JFrame{
         else if (cases[x][y].getVal() > 0) {
             cases[x][y].setVisible(true);
         }
-//        else if (cases[x][y].getVal() == 0) {
-//            int posCases[][] = new int [1000][2];
-//            int posCases2[][] = new int [1000][2];
-//            int size = 1;
-//            int size2 = 0;
-//            posCases[0][0] = x;
-//            posCases[0][1] = y;
-//            while (size > 0) {
-//                System.out.println("size = "+size);
-//                for (int s = 0; s < size; s++) {
-//                    if (casesHidden[posCases[s][0]][posCases[s][1]]) {
-//                        casesHidden[posCases[s][0]][posCases[s][1]] = false;
-//                        if (cases[posCases[s][0]][posCases[s][1]] == 0) {
-//                            
-//                            if (posCases[s][0] > 0) {
-//                                posCases2[size2][0] = posCases[s][0]-1;
-//                                posCases2[size2][1] = posCases[s][1];
-//                                size2++;
-//                            }
-//                            if (posCases[s][0] < x) {
-//                                posCases2[size2][0] = posCases[s][0]+1;
-//                                posCases2[size2][1] = posCases[s][1];
-//                                size2++;
-//                            }
-//                            if (posCases[s][1] > 0) {
-//                                posCases2[size2][0] = posCases[s][0];
-//                                posCases2[size2][1] = posCases[s][1]-1;
-//                                size2++;
-//                            }
-//                            if (posCases[s][1] < y) {
-//                                posCases2[size2][0] = posCases[s][0];
-//                                posCases2[size2][1] = posCases[s][1]+1;
-//                                size2++;
-//                            }
-//                        }
-//                        
-//                    }
-//                }
-//                
-//                size = size2;
-//                for (int s=0; s < size; s++) {
-//                    posCases[s][0] = posCases2[s][0];
-//                    posCases[s][1] = posCases2[s][1];
-//                    size2--;
-//                }
-//            }
-//        }
+        else if (cases[x][y].getVal() == 0) {
+            
+            ArrayList<Case> alCases = new ArrayList<Case>();
+            alCases.add(cases[cursorX][cursorY]);
+            cases[x][y].setVisible(true);
+            
+            int size = 1;
+            while (size > 0) {
+                
+                Iterator<Case> iterator = alCases.iterator();
+                while (iterator.hasNext() && size > 0) {
+                    
+                    Case c = iterator.next();
+                    int x1 = c.getX();
+                    int y1 = c.getY();
+                    
+                    System.out.println("case "+c.getX()+" "+c.getY()+" "+c.getVal());
+                    
+                    if (cases[x1][y1].getY() < 14 && cases[x1][y1+1].getVal() == 0) {
+                        if (!cases[x1][y1+1].isVisible())
+                            alCases.add(cases[x1][y1+1]);
+//                        System.out.println("casea"+cases[x1][y1+1].getX()+" "+cases[x1][y1+1].getY()+" "+cases[x1][y1+1].getVal());
+                    }
+                    else if (cases[x1][y1].getY() >= 0 && cases[x1][y1-1].getVal() == 0) {
+                        if (!cases[x1][y1-1].isVisible())
+                            alCases.add(cases[x1][y1-1]);
+//                        System.out.println("casea"+cases[x1][y1-1].getX()+" "+cases[x1][y1-1].getY()+" "+cases[x1][y1-1].getVal());
+                    }
+                    cases[x1][y1].setVisible(true);
+                    alCases.remove(cases[x1][y1]);
+                    size = alCases.size();
+                    System.out.println("fin de boucle, nb arrayliste "+alCases.size());
+                }
+            }
+        }
     }
 }

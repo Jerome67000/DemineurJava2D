@@ -71,7 +71,7 @@ public class Panel extends JPanel {
         // Dessine la case actuellement sélectionnée
         if (Game.cursorOnPanel && !Game.fini) {
             g.setColor(new Color(0, 0, 0, 100));
-            g.fillRect(Game.cursor[0]*Game.unite, Game.cursor[1]*Game.unite, Game.unite, Game.unite);
+            g.fillRect(Game.cursorX*Game.unite, Game.cursorY*Game.unite, Game.unite, Game.unite);
         }
     }
 
